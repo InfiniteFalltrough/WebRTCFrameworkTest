@@ -14,6 +14,7 @@
 		0685C2262A94E9DA00E396C9 /* WebRTC.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */; };
 		0685C2272A94E9DA00E396C9 /* WebRTC.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0685C22D2A94EA6C00E396C9 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0685C22C2A94EA6C00E396C9 /* WebSocket.swift */; };
+		0685C2392A94F28000E396C9 /* WebRTC in Resources */ = {isa = PBXBuildFile; fileRef = 0685C2382A94F28000E396C9 /* WebRTC */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +39,7 @@
 		0685C21D2A94E85700E396C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = WebRTC.xcframework; sourceTree = "<group>"; };
 		0685C22C2A94EA6C00E396C9 /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
+		0685C2382A94F28000E396C9 /* WebRTC */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WebRTC; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 			children = (
 				0685C2162A94E85600E396C9 /* WebRTCFrameworkTestApp.swift */,
 				0685C2182A94E85600E396C9 /* ContentView.swift */,
+				0685C2382A94F28000E396C9 /* WebRTC */,
 				0685C2362A94EB3D00E396C9 /* WebSocket */,
 				0685C21A2A94E85700E396C9 /* Assets.xcassets */,
 				0685C21C2A94E85700E396C9 /* Preview Content */,
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0685C21E2A94E85700E396C9 /* Preview Assets.xcassets in Resources */,
+				0685C2392A94F28000E396C9 /* WebRTC in Resources */,
 				0685C21B2A94E85700E396C9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
