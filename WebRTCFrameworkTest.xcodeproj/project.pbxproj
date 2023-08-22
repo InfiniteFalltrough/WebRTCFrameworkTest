@@ -11,7 +11,24 @@
 		0685C2192A94E85600E396C9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0685C2182A94E85600E396C9 /* ContentView.swift */; };
 		0685C21B2A94E85700E396C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0685C21A2A94E85700E396C9 /* Assets.xcassets */; };
 		0685C21E2A94E85700E396C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0685C21D2A94E85700E396C9 /* Preview Assets.xcassets */; };
+		0685C2262A94E9DA00E396C9 /* WebRTC.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */; };
+		0685C2272A94E9DA00E396C9 /* WebRTC.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0685C22D2A94EA6C00E396C9 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0685C22C2A94EA6C00E396C9 /* WebSocket.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0685C2282A94E9DA00E396C9 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0685C2272A94E9DA00E396C9 /* WebRTC.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0685C2132A94E85600E396C9 /* WebRTCFrameworkTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebRTCFrameworkTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -19,6 +36,8 @@
 		0685C2182A94E85600E396C9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0685C21A2A94E85700E396C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0685C21D2A94E85700E396C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = WebRTC.xcframework; sourceTree = "<group>"; };
+		0685C22C2A94EA6C00E396C9 /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0685C2262A94E9DA00E396C9 /* WebRTC.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +57,7 @@
 			children = (
 				0685C2152A94E85600E396C9 /* WebRTCFrameworkTest */,
 				0685C2142A94E85600E396C9 /* Products */,
+				0685C2242A94E9DA00E396C9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,6 +74,7 @@
 			children = (
 				0685C2162A94E85600E396C9 /* WebRTCFrameworkTestApp.swift */,
 				0685C2182A94E85600E396C9 /* ContentView.swift */,
+				0685C2362A94EB3D00E396C9 /* WebSocket */,
 				0685C21A2A94E85700E396C9 /* Assets.xcassets */,
 				0685C21C2A94E85700E396C9 /* Preview Content */,
 			);
@@ -67,6 +89,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		0685C2242A94E9DA00E396C9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0685C2252A94E9DA00E396C9 /* WebRTC.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0685C2362A94EB3D00E396C9 /* WebSocket */ = {
+			isa = PBXGroup;
+			children = (
+				0685C22C2A94EA6C00E396C9 /* WebSocket.swift */,
+			);
+			path = WebSocket;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,6 +115,7 @@
 				0685C20F2A94E85600E396C9 /* Sources */,
 				0685C2102A94E85600E396C9 /* Frameworks */,
 				0685C2112A94E85600E396C9 /* Resources */,
+				0685C2282A94E9DA00E396C9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -137,6 +176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0685C22D2A94EA6C00E396C9 /* WebSocket.swift in Sources */,
 				0685C2192A94E85600E396C9 /* ContentView.swift in Sources */,
 				0685C2172A94E85600E396C9 /* WebRTCFrameworkTestApp.swift in Sources */,
 			);
