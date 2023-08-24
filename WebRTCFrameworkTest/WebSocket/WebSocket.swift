@@ -7,21 +7,16 @@
 
 import Foundation
 
-protocol WebSocketProvider: AnyObject {
-    var delegate: WebSocketProviderDelegate? { get set }
-    func connect()
-    func send(data: Data)
+protocol WebSocketDelegate: AnyObject {
+    func webSocketDidConnect(_ webSocket: WebSocket)
+    func webSocketDidDisconnect(_ webSocket: WebSocket)
+    func webSocket(_ webSocket: WebSocket, didReceiveData data: Data)
 }
 
-protocol WebSocketProviderDelegate: AnyObject {
-    func webSocketDidConnect(_ webSocket: WebSocketProvider)
-    func webSocketDidDisconnect(_ webSocket: WebSocketProvider)
-    func webSocket(_ webSocket: WebSocketProvider, didReceiveData data: Data)
-}
-
-class WebSocket: NSObject, WebSocketProvider {
+/// Native WebSocket
+class WebSocket: NSObject {
     
-    var delegate: WebSocketProviderDelegate?
+    weak var delegate: WebSocketDelegate?
     private let url: URL
     private var socket: URLSessionWebSocketTask?
     private lazy var urlSession: URLSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
@@ -57,7 +52,7 @@ class WebSocket: NSObject, WebSocketProvider {
                 self.delegate?.webSocket(self, didReceiveData: data)
                 self.readMessage()
             case .success:
-                print("ALARM! Format mismatch!")
+                debugPrint("WS: Format mismatch!")
                 self.readMessage()
             case .failure:
                 self.disconnect()
@@ -81,4 +76,3 @@ extension WebSocket: URLSessionWebSocketDelegate, URLSessionDelegate  {
         self.disconnect()
     }
 }
-
