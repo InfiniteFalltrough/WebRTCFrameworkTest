@@ -19,10 +19,10 @@ final class Signaling {
     
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
-    private let webSocket: WebSocketProvider
+    private let webSocket: WebSocket
     weak var delegate: SignalingDelegate?
     
-    init(webSocket: WebSocketProvider) {
+    init(webSocket: WebSocket) {
         self.webSocket = webSocket
     }
     
@@ -39,7 +39,7 @@ final class Signaling {
             self.webSocket.send(data: message)
         }
         catch {
-            print("Signaling error! \n Encoding SDP \n \(error.localizedDescription)")
+            debugPrint("Signaling error! \n Encoding SDP \n \(error.localizedDescription)")
         }
     }
     
@@ -50,18 +50,18 @@ final class Signaling {
             self.webSocket.send(data: message)
         }
         catch {
-            print("Signaling error! \n Encoding candidate \n \(error.localizedDescription)")
+            debugPrint("Signaling error! \n Encoding candidate \n \(error.localizedDescription)")
         }
     }
 }
 
 
-extension Signaling: WebSocketProviderDelegate {
-    func webSocketDidConnect(_ webSocket: WebSocketProvider) {
+extension Signaling: WebSocketDelegate {
+    func webSocketDidConnect(_ webSocket: WebSocket) {
         self.delegate?.signalClientDidConnect(self)
     }
     
-    func webSocketDidDisconnect(_ webSocket: WebSocketProvider) {
+    func webSocketDidDisconnect(_ webSocket: WebSocket) {
         self.delegate?.signalClientDidDisconnect(self)
         
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
@@ -69,7 +69,7 @@ extension Signaling: WebSocketProviderDelegate {
         }
     }
     
-    func webSocket(_ webSocket: WebSocketProvider, didReceiveData data: Data) {
+    func webSocket(_ webSocket: WebSocket, didReceiveData data: Data) {
         let message: WebRTCMessage
         do {
             message = try self.decoder.decode(WebRTCMessage.self, from: data)
