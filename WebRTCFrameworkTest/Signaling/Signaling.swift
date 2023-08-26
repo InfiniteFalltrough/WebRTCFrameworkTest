@@ -9,10 +9,10 @@ import Foundation
 import WebRTC
 
 protocol SignalingDelegate: AnyObject {
-    func signalClientDidConnect(_ signalClient: Signaling)
-    func signalClientDidDisconnect(_ signalClient: Signaling)
-    func signalClient(_ signalClient: Signaling, didReceiveRemoteSdp sdp: RTCSessionDescription)
-    func signalClient(_ signalClient: Signaling, didReceiveCandidate candidate: RTCIceCandidate)
+    func signalingClientDidConnect(_ signalClient: Signaling)
+    func signalingClientDidDisconnect(_ signalClient: Signaling)
+    func signalingClient(_ signalClient: Signaling, didReceiveRemoteSdp sdp: RTCSessionDescription)
+    func signalingClient(_ signalClient: Signaling, didReceiveCandidate candidate: RTCIceCandidate)
 }
 
 final class Signaling {
@@ -58,11 +58,11 @@ final class Signaling {
 
 extension Signaling: WebSocketDelegate {
     func webSocketDidConnect(_ webSocket: WebSocket) {
-        self.delegate?.signalClientDidConnect(self)
+        self.delegate?.signalingClientDidConnect(self)
     }
     
     func webSocketDidDisconnect(_ webSocket: WebSocket) {
-        self.delegate?.signalClientDidDisconnect(self)
+        self.delegate?.signalingClientDidDisconnect(self)
         
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
             self.webSocket.connect()
@@ -80,9 +80,9 @@ extension Signaling: WebSocketDelegate {
         
         switch message {
         case .candidate(let iceCandidate):
-            self.delegate?.signalClient(self, didReceiveCandidate: iceCandidate.rtcIceCandidate)
+            self.delegate?.signalingClient(self, didReceiveCandidate: iceCandidate.rtcIceCandidate)
         case .sdp(let sessionDescription):
-            self.delegate?.signalClient(self, didReceiveRemoteSdp: sessionDescription.sessionDescription)
+            self.delegate?.signalingClient(self, didReceiveRemoteSdp: sessionDescription.sessionDescription)
         }
         
     }

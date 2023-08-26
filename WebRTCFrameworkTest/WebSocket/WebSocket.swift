@@ -13,7 +13,7 @@ protocol WebSocketDelegate: AnyObject {
     func webSocket(_ webSocket: WebSocket, didReceiveData data: Data)
 }
 
-/// Native WebSocket
+// MARK: - Native WebSocket
 class WebSocket: NSObject {
     
     weak var delegate: WebSocketDelegate?

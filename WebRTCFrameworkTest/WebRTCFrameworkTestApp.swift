@@ -12,10 +12,13 @@ struct WebRTCFrameworkTestApp: App {
     
     @StateObject var hudState = HUDState()
     @StateObject var networkMonitor = ConnectionMonitor()
+    @StateObject private var model = WebRTCConnectionModel(
+        webRTCClient: WebRTCClient(iceServers: publicStuns),
+        signalingClient: Signaling(webSocket: WebSocket(url: signalingURL)))
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(model: model)
                 .hud(isPresented: $hudState.isPresented) {
                     Label(hudState.title, systemImage: hudState.systemImage)
                 }

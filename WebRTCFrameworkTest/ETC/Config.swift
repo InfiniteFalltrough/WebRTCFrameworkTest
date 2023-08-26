@@ -12,7 +12,7 @@ import Foundation
 let signalingURL = URL(string: "ws://localhost:8080")!
 #else
 // For physical device
-let signalingURL = URL(string: "ws://192.168.0.000:8080")!
+let signalingURL = URL(string: "ws://192.168.1.102:8080")!
 #endif
 
 // Public stuns (Google). Might be slower, but stable.
