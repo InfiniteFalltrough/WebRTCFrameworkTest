@@ -15,7 +15,7 @@ protocol SignalingDelegate: AnyObject {
     func signalingClient(_ signalClient: Signaling, didReceiveCandidate candidate: RTCIceCandidate)
 }
 
-final class Signaling {
+class Signaling {
     
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
@@ -24,10 +24,10 @@ final class Signaling {
     
     init(webSocket: WebSocket) {
         self.webSocket = webSocket
+        self.webSocket.delegate = self
     }
     
     func connect() {
-        self.webSocket.delegate = self
         self.webSocket.connect()
     }
     
@@ -35,11 +35,10 @@ final class Signaling {
         let rtcMessage = WebRTCMessage.sdp(SessionDescriptionWrapper(from: sdp))
         do {
             let message = try self.encoder.encode(rtcMessage)
-            
             self.webSocket.send(data: message)
         }
         catch {
-            debugPrint("Signaling error! \n Encoding SDP \n \(error.localizedDescription)")
+            debugPrint("Signaling error! Encoding SDP: \(error.localizedDescription)")
         }
     }
     
@@ -50,7 +49,7 @@ final class Signaling {
             self.webSocket.send(data: message)
         }
         catch {
-            debugPrint("Signaling error! \n Encoding candidate \n \(error.localizedDescription)")
+            debugPrint("Signaling error! Encoding candidate: \(error.localizedDescription)")
         }
     }
 }
@@ -58,12 +57,11 @@ final class Signaling {
 
 extension Signaling: WebSocketDelegate {
     func webSocketDidConnect(_ webSocket: WebSocket) {
-        self.delegate?.signalingClientDidConnect(self)
+        delegate?.signalingClientDidConnect(self)
     }
     
     func webSocketDidDisconnect(_ webSocket: WebSocket) {
-        self.delegate?.signalingClientDidDisconnect(self)
-        
+        delegate?.signalingClientDidDisconnect(self)
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
             self.webSocket.connect()
         }
@@ -72,18 +70,17 @@ extension Signaling: WebSocketDelegate {
     func webSocket(_ webSocket: WebSocket, didReceiveData data: Data) {
         let message: WebRTCMessage
         do {
-            message = try self.decoder.decode(WebRTCMessage.self, from: data)
+            message = try decoder.decode(WebRTCMessage.self, from: data)
         }
         catch {
-            fatalError("WS Error! \n Could not decode incoming message: \(error.localizedDescription)")
+            fatalError("Signaling Error! WS: Could not decode incoming message: \(error.localizedDescription)")
         }
         
         switch message {
         case .candidate(let iceCandidate):
-            self.delegate?.signalingClient(self, didReceiveCandidate: iceCandidate.rtcIceCandidate)
+            delegate?.signalingClient(self, didReceiveCandidate: iceCandidate.rtcIceCandidate)
         case .sdp(let sessionDescription):
-            self.delegate?.signalingClient(self, didReceiveRemoteSdp: sessionDescription.sessionDescription)
+            delegate?.signalingClient(self, didReceiveRemoteSdp: sessionDescription.sessionDescription)
         }
-        
     }
 }

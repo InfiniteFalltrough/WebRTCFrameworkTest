@@ -15,15 +15,10 @@ class WebRTCConnectionModel: ObservableObject {
     private var signalingClient: Signaling
     
     @Published public var signalingConnected: Bool = false
-    
     @Published public var mute: Bool = false
-    
     @Published public var disableVideo: Bool = false
-    
     @Published public var connectionState: RTCIceConnectionState = .checking
-    
     @Published public var localVideoTrack: RTCVideoTrack? = nil
-    
     @Published public var remoteVideoTrack: RTCVideoTrack? = nil
     
     init(webRTCClient: WebRTCClient, signalingClient: Signaling) {
@@ -48,11 +43,11 @@ class WebRTCConnectionModel: ObservableObject {
             self.signalingClient.send(sdp: sdp)
         }
     }
-    //TODO: handle starting capturing properly
+    
     public func startCaptureLocalVideo() {
         self.webRTCClient.startCaptureLocalVideo()
     }
-    //TODO: handle disconnection properly
+    
     public func stopCapturingLocalVideo() {
         self.webRTCClient.stopCaptureLocalVideo()
     }
@@ -71,37 +66,36 @@ class WebRTCConnectionModel: ObservableObject {
 // MARK: - Signaling delegate
 extension WebRTCConnectionModel: SignalingDelegate {
     
-    func signalingClientDidConnect(_ signalingClient: Signaling) {
+    func signalingClientDidConnect(_ signalClient: Signaling) {
         debugPrint("WebRTCConnectionModel: signaling connected")
-        Task { @MainActor in
+        Task {
             self.signalingConnected = true
         }
     }
     
-    func signalingClientDidDisconnect(_ signalingClient: Signaling) {
+    func signalingClientDidDisconnect(_ signalClient: Signaling) {
         debugPrint("WebRTCConnectionModel: signaling disconnected")
-        Task { @MainActor in
+        Task {
             self.signalingConnected = false
         }
     }
     
-    func signalingClient(_ signalingClient: Signaling, didReceiveRemoteSdp sdp: RTCSessionDescription) {
+    func signalingClient(_ signalClient: Signaling, didReceiveRemoteSdp sdp: RTCSessionDescription) {
         debugPrint("WebRTCConnectionModel: didReceiveRemoteSdp")
-        self.webRTCClient.set(remoteSdp: sdp) { (error) in
+        self.webRTCClient.set(remoteSdp: sdp) { _ in
             if !sdp.description.isEmpty {
                 self.webRTCClient.answer { localSdp in
-                    signalingClient.send(sdp: localSdp)
+                    signalClient.send(sdp: localSdp)
                 }
             }
         }
     }
     
-    func signalingClient(_ signalingClient: Signaling, didReceiveCandidate candidate: RTCIceCandidate) {
-        self.webRTCClient.set(remoteCandidate: candidate) { error in
+    func signalingClient(_ signalClient: Signaling, didReceiveCandidate candidate: RTCIceCandidate) {
+        self.webRTCClient.set(remoteCandidate: candidate) { _ in
             debugPrint("WebRTCConnectionModel: didReceiveCandidate")
         }
     }
-    
 }
 
 // MARK: - WebRTC client delegate
@@ -114,12 +108,12 @@ extension WebRTCConnectionModel: WebRTCClientDelegate {
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState) {
         debugPrint("WebRTCConnectionModel: didChangeConnectionState - \(state)")
-        Task { @MainActor in
+        Task {
             self.connectionState = state
         }
     }
-    
-// TODO: -  handle data transfer
+
+    // TODO: Handle data transfer
     func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data) {
         DispatchQueue.main.async {
             let message = String(data: data, encoding: .utf8) ?? "(Binary: \(data.count) bytes)"
