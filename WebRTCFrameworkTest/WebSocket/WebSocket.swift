@@ -13,7 +13,6 @@ protocol WebSocketDelegate: AnyObject {
     func webSocket(_ webSocket: WebSocket, didReceiveData data: Data)
 }
 
-// MARK: - Native WebSocket
 class WebSocket: NSObject {
     
     weak var delegate: WebSocketDelegate?
@@ -31,37 +30,35 @@ class WebSocket: NSObject {
         socket.resume()
         self.socket = socket
         self.readMessage()
-        // TODO: by time interval
-        // self.socket?.sendPing(pongReceiveHandler: (Error?) -> Void)
     }
 
     func send(data: Data) {
         self.socket?.send(.data(data)) { _ in }
     }
     
-    func send(string: String) {
-        self.socket?.send(.string(string)) { _ in }
-    }
-    
     private func readMessage() {
-        self.socket?.receive { [weak self] message in
+        self.socket?.receive { [weak self] result in
             guard let self = self else { return }
             
-            switch message {
-            case .success(.data(let data)):
-                self.delegate?.webSocket(self, didReceiveData: data)
-                self.readMessage()
-            case .success:
-                debugPrint("WS: Format mismatch!")
-                self.readMessage()
-            case .failure:
+            switch result {
+            case .success(let message):
+                switch message {
+                case .data(let data):
+                    self.delegate?.webSocket(self, didReceiveData: data)
+                    self.readMessage()
+                default:
+                    debugPrint("WS: Expected to receive data format but received a string. Check the websocket server config.")
+                    self.readMessage()
+                }
+            case .failure(let error):
+                debugPrint("WS: Receive error - \(error)")
                 self.disconnect()
             }
         }
     }
     
     func disconnect() {
-        self.socket?.cancel()
+        self.socket?.cancel(with: .normalClosure, reason: nil)
         self.socket = nil
         self.delegate?.webSocketDidDisconnect(self)
     }
@@ -72,7 +69,10 @@ extension WebSocket: URLSessionWebSocketDelegate, URLSessionDelegate  {
         self.delegate?.webSocketDidConnect(self)
     }
     
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
-        self.disconnect()
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if let error = error {
+            debugPrint("WS: URLSession error - \(error)")
+            self.disconnect()
+        }
     }
 }
