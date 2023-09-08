@@ -9,10 +9,10 @@ import Foundation
 
 #if targetEnvironment(simulator)
 // For simulator
-let signalingURL = URL(string: "ws://localhost:8080")!
+let signalingURL = URL(string: "ws://localhost:8080/?room=TEST")!
 #else
 // For physical device
-let signalingURL = URL(string: "ws://192.168.1.102:8080")!
+let signalingURL = URL(string: "ws://192.168.1.102:8080/?room=TEST")!
 #endif
 
 // Public stuns (Google). Might be slower, but stable.
