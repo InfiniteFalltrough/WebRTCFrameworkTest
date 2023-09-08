@@ -33,7 +33,11 @@ class WebSocket: NSObject {
     }
 
     func send(data: Data) {
-        self.socket?.send(.data(data)) { _ in }
+        self.socket?.send(.data(data)) { error in
+            if let error = error {
+                debugPrint("WS: Send error - \(error)")
+            }
+        }
     }
     
     private func readMessage() {
