@@ -9,9 +9,7 @@ import SwiftUI
 import WebRTC
 
 struct ContentView: View {
-    
     @ObservedObject var model: WebRTCConnectionModel
-    
     var body: some View {
         VStack(spacing: 10) {
             statusBar()
@@ -42,7 +40,7 @@ struct ContentView: View {
             model.connect()
         }
     }
-    
+
     func statusBar() -> some View {
         return HStack(spacing: 20) {
             Text(model.signalingConnected ? "Connected" : "Not connected")
@@ -51,7 +49,7 @@ struct ContentView: View {
             Text("WebRTC: \(model.connectionState.description)")
         }.font(.system(size: 20, weight: .medium))
     }
-    
+
     func controlButtons() -> some View {
         return HStack(spacing: 40) {
             Spacer()
@@ -66,7 +64,7 @@ struct ContentView: View {
                 Image(systemName: "mic.fill")
             }.foregroundColor(model.mute ? .green : .red)
             Button {
-                //TODO: - hang up
+            // - todo hang up
             } label: {
                 Image(systemName: "phone.fill")
             }.foregroundColor(.red)

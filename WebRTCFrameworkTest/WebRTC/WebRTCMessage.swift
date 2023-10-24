@@ -16,9 +16,8 @@ enum CodingKeys: String, CodingKey {
     case type, payload
 }
 
-
 extension WebRTCMessage: Codable {
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: .type)
@@ -31,7 +30,7 @@ extension WebRTCMessage: Codable {
             fatalError("Error decoding WebRTC message!")
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {

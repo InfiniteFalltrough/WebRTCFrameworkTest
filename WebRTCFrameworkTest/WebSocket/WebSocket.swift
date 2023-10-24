@@ -14,7 +14,7 @@ protocol WebSocketDelegate: AnyObject {
 }
 
 class WebSocket: NSObject {
-    
+
     weak var delegate: WebSocketDelegate?
     private let url: URL
     private var socket: URLSessionWebSocketTask?
@@ -39,11 +39,11 @@ class WebSocket: NSObject {
             }
         }
     }
-    
+
     private func readMessage() {
         self.socket?.receive { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let message):
                 switch message {
@@ -51,7 +51,10 @@ class WebSocket: NSObject {
                     self.delegate?.webSocket(self, didReceiveData: data)
                     self.readMessage()
                 default:
-                    debugPrint("WS: Expected to receive data format but received a string. Check the websocket server config.")
+                    debugPrint("""
+                                WS: Expected to receive data format but received a string.
+                                Check the websocket server config.
+                                """)
                     self.readMessage()
                 }
             case .failure(let error):
@@ -60,7 +63,7 @@ class WebSocket: NSObject {
             }
         }
     }
-    
+
     func disconnect() {
         self.socket?.cancel(with: .normalClosure, reason: nil)
         self.socket = nil
@@ -68,11 +71,13 @@ class WebSocket: NSObject {
     }
 }
 
-extension WebSocket: URLSessionWebSocketDelegate, URLSessionDelegate  {
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+extension WebSocket: URLSessionWebSocketDelegate, URLSessionDelegate {
+    func urlSession(_ session: URLSession,
+                    webSocketTask: URLSessionWebSocketTask,
+                    didOpenWithProtocol protocol: String?) {
         self.delegate?.webSocketDidConnect(self)
     }
-    
+
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {
             debugPrint("WS: URLSession error - \(error)")

@@ -8,12 +8,12 @@
 import SwiftUI
 
 final class HUDState: ObservableObject {
-    
+
     @Published var isPresented: Bool = false
-    
+
     private(set) var title: String = ""
     private(set) var systemImage: String = ""
-    
+
     func show(title: String, systemImage: String) {
         self.title = title
         self.systemImage = systemImage
@@ -24,10 +24,10 @@ final class HUDState: ObservableObject {
 }
 
 struct HUD<Content: View>: View {
-    
+
     @ViewBuilder let content: Content
     @Environment(\.colorScheme) var currentScheme
-    
+
     var body: some View {
         content
             .foregroundColor(currentScheme == .light ? .white : .black)
@@ -37,14 +37,14 @@ struct HUD<Content: View>: View {
                 Capsule()
                     .foregroundColor(currentScheme == .light ? .black : .white)
                     .shadow(
-                        color:(currentScheme == .light ? Color.black : Color.white).opacity(0.16),
+                        color: (currentScheme == .light ? Color.black : Color.white).opacity(0.16),
                         radius: 12, x: 0, y: 5)
             )
     }
 }
 
 extension View {
-    
+
     func hud<Content: View> (
         isPresented: Binding<Bool>,
         @ViewBuilder content: () -> Content
@@ -65,4 +65,3 @@ extension View {
         }
     }
 }
-

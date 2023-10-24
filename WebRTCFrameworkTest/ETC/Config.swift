@@ -22,7 +22,7 @@ let publicStuns = [
     "stun:stun1.l.google.com:19302",
     "stun:stun2.l.google.com:19302",
     "stun:stun3.l.google.com:19302",
-    "stun:stun4.l.google.com:19302",
+    "stun:stun4.l.google.com:19302"
 ]
 #else
 // To increase the speed, build your own specialized stun server.

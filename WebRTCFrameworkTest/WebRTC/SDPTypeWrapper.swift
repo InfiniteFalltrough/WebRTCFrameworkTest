@@ -10,7 +10,7 @@ import WebRTC
 
 enum SDPTypeWrapper: String, Codable {
     case offer, prAnswer, answer, rollback
-    
+
     var sdpType: RTCSdpType {
         switch self {
         case .offer:    return .offer
