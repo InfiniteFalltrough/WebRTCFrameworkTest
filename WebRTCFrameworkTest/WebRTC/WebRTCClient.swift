@@ -109,35 +109,6 @@ final class WebRTCClient: NSObject {
     }
 
     // MARK: Media
-    func startCaptureLocalVideo(renderer: RTCVideoRenderer) {
-        guard let capturer = self.videoCapturer as? RTCCameraVideoCapturer else {
-            return
-        }
-
-        guard
-            let frontCamera = (RTCCameraVideoCapturer.captureDevices().first { $0.position == .front }),
-
-                // choose highest res
-            let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (format1, format2) -> Bool
-                in
-                let width1 = CMVideoFormatDescriptionGetDimensions(format1.formatDescription).width
-                let width2 = CMVideoFormatDescriptionGetDimensions(format2.formatDescription).width
-                return width1 < width2
-            }).last,
-
-                // choose highest fps
-            let fps = (format.videoSupportedFrameRateRanges.sorted {
-                return $0.maxFrameRate < $1.maxFrameRate }.last) else {
-            return
-        }
-
-        capturer.startCapture(with: frontCamera,
-                              format: format,
-                              fps: Int(fps.maxFrameRate))
-
-        self.localVideoTrack?.add(renderer)
-    }
-
     func startCaptureLocalVideo() {
         guard let capturer = self.videoCapturer as? RTCCameraVideoCapturer else {
             return
